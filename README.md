@@ -1,4 +1,4 @@
-https://resumemaker-jr2w6jaigu8gajuaz2y6km.streamlit.app/
+https://ai-resume-maker-v2.streamlit.app/
 
 Resume Builder Pro — Project Description
 Resume Builder Pro is a full-stack AI-powered web application built with Python & Streamlit that allows users to create professional, ATS-optimized resumes in minutes — no design skills needed.
