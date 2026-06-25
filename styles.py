@@ -1,7 +1,13 @@
 """
 styles.py
 =========
-Resume Builder Pro — Light Theme + Mobile Responsive
+Resume Builder Pro — Light Theme + Mobile Responsive (FIXED)
+Mobile fixes:
+ - Progress bar dots no longer overflow/clip on small screens
+ - Section header Step badge smaller on mobile
+ - Input label font reduced on mobile
+ - Main title clamp fixed for very small screens (320px phones)
+ - Number input / expander text kept readable but not huge
 """
 
 PADDING_RESET_CSS = """
@@ -15,9 +21,9 @@ PADDING_RESET_CSS = """
     }
     @media (max-width: 768px) {
         section.main > div.block-container {
-            padding-left: 0.8rem !important;
-            padding-right: 0.8rem !important;
-            padding-top: 0.5rem !important;
+            padding-left: 0.6rem !important;
+            padding-right: 0.6rem !important;
+            padding-top: 0.4rem !important;
         }
     }
 </style>
@@ -87,36 +93,45 @@ section[data-testid="stSidebar"] h3 { color: #4f46e5 !important; }
 
     /* Main header smaller on mobile */
     .main-header {
-        font-size: 2.2rem !important;
-        letter-spacing: -1px !important;
-        padding: 1.2rem 0 0.5rem 0 !important;
+        font-size: 1.8rem !important;
+        letter-spacing: -0.5px !important;
+        padding: 0.8rem 0 0.4rem 0 !important;
     }
 
     /* Section boxes less padding */
     .section-box {
-        padding: 1.2rem 1rem !important;
-        border-radius: 14px !important;
-        margin: 1rem 0 !important;
+        padding: 1rem 0.85rem !important;
+        border-radius: 12px !important;
+        margin: 0.8rem 0 !important;
     }
 
     /* Buttons full width tap targets */
     .stButton > button {
-        height: 3.2em !important;
-        font-size: 0.92rem !important;
+        height: 3.0em !important;
+        font-size: 0.85rem !important;
     }
     .stDownloadButton > button {
-        height: 3.2em !important;
-        font-size: 0.92rem !important;
+        height: 3.0em !important;
+        font-size: 0.85rem !important;
     }
 
-    /* Template cards: 2 per row on mobile instead of 3 */
-    /* (Streamlit columns can't be overridden per-row easily,
-       so we rely on the stacked column approach above) */
+    /* Input labels smaller on mobile */
+    div[data-testid="stTextInput"] label,
+    div[data-testid="stTextArea"] label,
+    div[data-testid="stSelectbox"] label,
+    div[data-testid="stNumberInput"] label,
+    div[data-testid="stFileUploader"] label {
+        font-size: 0.78rem !important;
+    }
 
-    /* Progress bar dots: smaller text */
-    .progress-steps { gap: 3px !important; }
+    /* Expander text smaller */
+    div[data-testid="stExpander"] summary {
+        font-size: 0.82rem !important;
+        padding: 0.75rem 0.9rem !important;
+    }
 
-    /* Live preview: reduce max-height */
+    /* Progress bar dots: wrap nicely, smaller dot + text */
+    .progress-steps { gap: 2px !important; }
 }
 
 /* ============================================================
@@ -248,12 +263,12 @@ div[data-testid="stTextArea"] textarea:focus {
 div[data-testid="stTextInput"] input::placeholder,
 div[data-testid="stTextArea"] textarea::placeholder { color: #94a3b8 !important; }
 
-/* Mobile: slightly smaller inputs */
+/* Mobile: smaller inputs */
 @media (max-width: 768px) {
     div[data-testid="stTextInput"] input,
     div[data-testid="stTextArea"] textarea {
-        font-size: 0.88rem !important;
-        padding: 0.6rem 0.8rem !important;
+        font-size: 0.82rem !important;
+        padding: 0.55rem 0.7rem !important;
     }
 }
 
@@ -519,11 +534,9 @@ div[data-testid="metric-container"] [data-testid="stMetricValue"] { color: #4f46
 .stSpinner > div { border-top-color: #6366f1 !important; }
 
 /* ============================================================
-   MOBILE: hide live preview below form (it renders after form)
-   so it's naturally below on mobile — add a visible divider
+   MOBILE: live preview section separator
    ============================================================ */
 @media (max-width: 768px) {
-    /* Give live preview section a top margin for separation */
     div[data-testid="stColumn"]:last-child {
         margin-top: 1rem;
         border-top: 2px dashed #e0e7ff;
@@ -565,14 +578,14 @@ MAIN_TITLE_HTML = """
     <div style="
         display: inline-flex;
         align-items: center;
-        gap: 14px;
+        gap: 10px;
         margin-bottom: 0.5rem;
         flex-wrap: wrap;
         justify-content: center;
     ">
-        <span style="font-size: 2.2rem;">&#128196;</span>
+        <span style="font-size: clamp(1.4rem, 5vw, 2.2rem);">&#128196;</span>
         <h1 style="
-            font-size: clamp(1.8rem, 6vw, 3.8rem);
+            font-size: clamp(1.4rem, 5vw, 3.8rem);
             font-weight: 900;
             font-family: 'Sora', sans-serif;
             background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #2563eb 100%);
@@ -580,10 +593,10 @@ MAIN_TITLE_HTML = """
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin: 0;
-            letter-spacing: -2px;
+            letter-spacing: -1px;
             line-height: 1;
         ">Resume Builder Pro</h1>
-        <span style="font-size: 2.2rem;">&#10024;</span>
+        <span style="font-size: clamp(1.4rem, 5vw, 2.2rem);">&#10024;</span>
     </div>
 </div>
 """
@@ -592,19 +605,19 @@ MAIN_TITLE_HTML = """
 # TAGLINE
 # ============================================================
 TAGLINE_HTML = """
-<div style="text-align: center; margin-bottom: 2rem; padding: 0 1rem;">
+<div style="text-align: center; margin-bottom: 2rem; padding: 0 0.5rem;">
     <div style="
         display: inline-flex;
         align-items: center;
-        gap: 6px;
+        gap: 5px;
         background: linear-gradient(135deg, #eef2ff, #f5f3ff);
         border: 1px solid #c7d2fe;
         border-radius: 50px;
-        padding: 8px 16px;
-        font-size: clamp(0.65rem, 2vw, 0.8rem);
+        padding: 6px 12px;
+        font-size: clamp(0.58rem, 1.8vw, 0.78rem);
         font-weight: 600;
         color: #4f46e5;
-        letter-spacing: 1.5px;
+        letter-spacing: 1px;
         text-transform: uppercase;
         box-shadow: 0 2px 10px rgba(99,102,241,0.12);
         flex-wrap: wrap;
